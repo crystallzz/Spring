@@ -6,7 +6,7 @@ public interface MemberMapper {
 	@Select("SELECT COUNT(*) FROM member "
 			+ "WHERE id=#{id}")
 	public int idCheck(String id);
-	@Select("SELECT pwd,name FROM member "
+	@Select("SELECT password FROM member "
 			+ "WHERE id=#{id}")
 	public String memberGetPassword(String id);
 }

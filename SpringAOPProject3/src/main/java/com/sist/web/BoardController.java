@@ -1,5 +1,5 @@
 package com.sist.web;
-
+//Model => 해당 JSP로 데이터 전송
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,5 +43,31 @@ public class BoardController {
 	{
 		dao.boardInsert(vo);
 		return "redirect:list.do";
+	}
+	@GetMapping("board/detail.do")
+	public String board_detail(int no,Model model)
+	{
+		//DB연동
+		BoardVO vo=dao.boardDetailData(no);
+		//데이터 전송
+		model.addAttribute("vo",vo);
+		return "board/detail";
+	}
+	
+	@GetMapping("board/reply.do")
+	public String board_reply(int no,Model model)
+	{
+		model.addAttribute("no",no);
+		return "board/reply";
+	}
+	/*
+	 *  <a>,<location.href> => GetMapping
+	 *  <form> =>PostMapping
+	 */
+	@PostMapping("board/reply_ok.do")
+	public String board_reply_ok(int pno,BoardVO vo)
+	{
+		dao.boardReplyInsert(pno, vo);
+		return "redirect:../board/list.do";
 	}
 }
