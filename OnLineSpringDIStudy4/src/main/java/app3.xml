@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+   <!-- 데이터 베이스 정보 생성 -->
+   <!-- 
+      BasicDataSource에는
+         driverClassName
+         url
+         username
+         password
+      있는 값들을 채워서 넘겨줘야한다.
+         
+    -->
+    <!-- 
+      값 주입 방법 (DI 방법)
+         1.일반 데이터 값 주입   p:변수명=""
+         2.스프링에서 생성된 객체 주소 주입   p:객체명-ref
+    -->
+    <!-- 1.setter di 부분 -->
+   <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
+      p:driverClassName="oracle.jdbc.driver.OracleDriver"
+      p:url="jdbc:oracle:thin:@211.238.142.183:1521:XE"
+      p:username="hr"
+      p:password="happy"
+   />
+   
+   <!-- 2.SqlSessionFactory (ssf)생성 -->
+   <!--  2-1.디비 정보 전송 -->
+   <!--  2-2.mapper전송 -->
+   <bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean"
+      p:dataSource-ref="ds"
+      p:configLocation="classpath:Config.xml"
+   />
+   <!-- 3.EmpDAO로 전송 -->
+   <bean id="dao" class="com.sist.di2.EmpDAO"
+      p:sqlSessionFactory-ref="ssf"
+   />
+</beans>
